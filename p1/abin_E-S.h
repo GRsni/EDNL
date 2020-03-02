@@ -120,7 +120,7 @@ void imprimirDescendientes(typename Abin<T>::nodo n, const Abin<T> &A)
              << A.elemento(A.hijoIzqdo(n)) << endl;
         imprimirDescendientes(A.hijoIzqdo(n), A);
     }
-    if (A.hijoDer(n) != Abin<T>::NODO_NULO)
+    if (A.hijoDrcho(n) != Abin<T>::NODO_NULO)
     {
         cout << "Hijo derecho de " << A.elemento(n) << ": "
              << A.elemento(A.hijoDrcho(n)) << endl;
