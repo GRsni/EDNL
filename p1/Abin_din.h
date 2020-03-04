@@ -207,7 +207,7 @@ typename Abin<T>::nodo Abin<T>::copiar(Abin<T>::nodo n)
         {
             m->hder->padre = m;
         }
-        return m;
     }
+    return m;
 }
 #endif //ABIN_DIN_H
