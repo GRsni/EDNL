@@ -12,7 +12,7 @@ int numeroNodos_rec(Abin<tElto>::nodo n, Abin<tElto> A)
 {
     if (n == Abin<char>::NODO_NULO)
     {
-        return -1;
+        return 0;
     }
     else
     {
@@ -30,12 +30,12 @@ int alturaAbin_rec(Abin<tElto>::nodo n, Abin<tElto> A)
 {
     if (n == Abin<tElto>::NODO_NULO)
     {
-        return -1;
+        return 0;
     }
     else
     {
-        return 1 + std::fmax(alturaAbin_rec(A.hijoDrcho(n), A),
-                             alturaAbin_rec(A.hijoDrcho(n), A));
+        return 1 + fmaxf(alturaAbin_rec(A.hijoDrcho(n), A),
+                         alturaAbin_rec(A.hijoDrcho(n), A));
     }
 }
 

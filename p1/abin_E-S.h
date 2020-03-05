@@ -21,7 +21,7 @@ void rellenarAbin(Abin<T> &A, const T &fin)
     T e;
 
     //assert(A.arbolVacio());
-    cout << "Raíz (Fin = " << fin << "): ";
+    cout << "Raiz (Fin = " << fin << "): ";
     cin >> e;
     if (e != fin)
     {
@@ -102,12 +102,12 @@ void imprimirAbin(const Abin<T> &A)
 {
     if (!A.arbolVacio())
     {
-        cout << "Raíz del árbol: "
+        cout << "Raiz del árbol: "
              << A.elemento(A.raiz()) << endl;
         imprimirDescendientes(A.raiz(), A);
     }
     else
-        cout << "Árbol vacío\n";
+        cout << "Arbol vacío\n";
 }
 
 template <typename T>
