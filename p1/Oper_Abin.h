@@ -10,14 +10,13 @@ typedef char tElto;
 
 int numeroNodos_rec(Abin<tElto>::nodo n, Abin<tElto> A)
 {
-    if (n == Abin<char>::NODO_NULO)
+    if (n == Abin<tElto>::NODO_NULO)
     {
-        return -1;
+        return 0;
     }
     else
     {
-        return ((1 + numeroNodos_rec(A.hijoDrcho(n), A)) +
-                (1 + numeroNodos_rec(A.hijoIzqdo(n), A)));
+        return (1 + numeroNodos_rec(A.hijoDrcho(n), A) + numeroNodos_rec(A.hijoIzqdo(n), A));
     }
 }
 
@@ -35,7 +34,7 @@ int alturaAbin_rec(Abin<tElto>::nodo n, Abin<tElto> A)
     else
     {
         return 1 + std::fmax(alturaAbin_rec(A.hijoDrcho(n), A),
-                             alturaAbin_rec(A.hijoDrcho(n), A));
+                             alturaAbin_rec(A.hijoIzqdo(n), A));
     }
 }
 

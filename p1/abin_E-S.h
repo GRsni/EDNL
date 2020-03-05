@@ -5,6 +5,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "Abin_din.h"
+
 using std::cin;
 using std::cout;
 using std::endl;
