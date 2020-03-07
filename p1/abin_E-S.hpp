@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "Abin_din.h"
+#include "Abin_din.hpp"
 
 using std::cin;
 using std::cout;

@@ -24,6 +24,9 @@ public:
     nodo padre(nodo n) const;
     nodo hijoIzqdo(nodo n) const;
     nodo hijoDrcho(nodo n) const;
+    int altura();
+    int profundidad(nodo n);
+
     Abin(const Abin<T> &A);
     Abin<T> &operator=(const Abin<T> &A);
     ~Abin();
@@ -37,6 +40,8 @@ private:
     celda *nodos;
     int maxNodos;
     int numNodos;
+
+    int altura_rec();
 };
 
 /* Definición del nodo nulo */
@@ -208,6 +213,25 @@ inline typename Abin<T>::nodo Abin<T>::hijoDrcho(Abin<T>::nodo n) const
 {
     assert(n >= 0 && n < numNodos);
     return nodos[n].hder;
+}
+
+template <typename T>
+inline int Abin<T>::altura()
+{
+    return altura_rec(0);
+}
+
+template <typename T>
+int altura_rec(Abin<T>::nodo n)
+{
+    if (n == NODO_NULO)
+    {
+        return -1;
+    }
+    else
+    {
+        return 1 + fmax(altura_rec(nodos[n].hizq, altura_rec(nodos[n].hder)));
+    }
 }
 
 template <typename T>

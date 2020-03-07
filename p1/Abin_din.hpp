@@ -1,7 +1,8 @@
-#ifndef ABIN_DIN_H
-#define ABIN_DIN_H
+#ifndef ABIN_DIN_HPP
+#define ABIN_DIN_HPP
 
 #include <cassert>
+#include <cmath>
 
 template <typename T>
 class Abin
@@ -25,6 +26,10 @@ public:
     nodo padre(nodo n) const;
     nodo hijoIzqdo(nodo n) const;
     nodo hijoDrcho(nodo n) const;
+
+    int altura();
+    int profundidad(nodo n);
+
     Abin(const Abin<T> &a);
     Abin<T> &operator=(const Abin<T> &A);
     ~Abin();
@@ -42,6 +47,7 @@ private:
 
     void destruirNodos(nodo &n);
     nodo copiar(nodo n);
+    int altura_rec(nodo n);
 };
 
 template <typename T>
@@ -153,6 +159,25 @@ inline typename Abin<T>::nodo Abin<T>::hijoDrcho(Abin<T>::nodo n) const
 }
 
 template <typename T>
+inline int Abin<T>::altura()
+{
+    return altura_rec(r);
+}
+
+template <typename T>
+inline int Abin<T>::profundidad(Abin<T>::nodo n)
+{
+    if (n == NODO_NULO)
+    {
+        return -1;
+    }
+    else
+    {
+        return 1 + profundidad(padre(n));
+    }
+}
+
+template <typename T>
 inline Abin<T>::Abin(const Abin<T> &A)
 {
     r = copiar(A.r);
@@ -209,5 +234,18 @@ typename Abin<T>::nodo Abin<T>::copiar(Abin<T>::nodo n)
         }
     }
     return m;
+}
+
+template <typename T>
+int Abin<T>::altura_rec(Abin<T>::nodo n)
+{
+    if (n == NODO_NULO)
+    {
+        return -1;
+    }
+    else
+    {
+        return 1 + fmax(altura_rec(n->hizq), altura_rec(n->hder));
+    }
 }
 #endif //ABIN_DIN_H
