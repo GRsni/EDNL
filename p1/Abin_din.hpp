@@ -29,6 +29,7 @@ public:
 
     int altura();
     int profundidad(nodo n);
+    bool esHoja(nodo n);
 
     Abin(const Abin<T> &a);
     Abin<T> &operator=(const Abin<T> &A);
@@ -175,6 +176,12 @@ inline int Abin<T>::profundidad(Abin<T>::nodo n)
     {
         return 1 + profundidad(padre(n));
     }
+}
+
+template <typename T>
+inline bool Abin<T>::esHoja(Abin<T>::nodo n)
+{
+    return n->hder == NODO_NULO && n->hizq == NODO_NULO;
 }
 
 template <typename T>

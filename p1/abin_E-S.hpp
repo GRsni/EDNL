@@ -58,6 +58,14 @@ void rellenarDescendientes(typename Abin<T>::nodo n, Abin<T> &A, const T &fin)
     }
 }
 
+void rellenarAbin(istream &is, Abin<Expresion> &A)
+{
+    Expresion e, fin;
+    assert(A.arbolVacio());
+    char charFin;
+    //if (is >> charFin && is >>)
+}
+
 template <typename T>
 void rellenarAbin(istream &is, Abin<T> &A)
 // Pre: A está vacío.
