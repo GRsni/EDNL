@@ -95,4 +95,119 @@ void Abin<T>::eliminarHijoIzqdo(Abin<T>::nodo n)
     nodos[2 * n + 1] == ELTO_NULO;
 }
 
+template <typename T>
+void Abin<T>::eliminarHijoDrcho(Abin<T>::nodo n)
+{
+    assert(n >= &&n <= maxNodos - 1);
+    assert(nodos[n] != ELTO_NULO);
+    assert(2 * n + 2 < maxNodos);
+    assert(nodos[2 * n + 2] != ELTO_NULO);
+    if (4 * n + 6 < maxNodos)
+    {
+        assert(nodos[4 * n + 5] == ELTO_NULO && nodos[4 * n + 6] == ELTO_NULO);
+    }
+    else if (4 * n + 5 < maxNodos)
+    {
+        assert(nodos[4 * n + 5] == ELTO_NULO);
+    }
+    nodos[2 * n + 2] = ELTO_NULO;
+}
+
+template <typename T>
+inline void Abin<T>::eliminarRaiz()
+{
+    assert(nodos[0] != ELTO_NULO);
+    assert(nodos[1] == ELTO_NULO && nodos[2] == ELTO_NULO);
+    nodos[0] = ELTO_NULO;
+}
+
+template <typename T>
+inline bool Abin<T>::arbolVacio() const
+{
+    return (nodos[0] == ELTO_NULO);
+}
+
+template <typename T>
+inline const T &Abin<T>::elemento(Abin<T>::nodo n) const
+{
+    assert(n >= &&n < maxNodos - 1);
+    assert(nodos[n] != ELTO_NULO);
+    return nodos[n];
+}
+
+template <typename T>
+inline T &Abin<T>::elemento(Abin<T>::nodo n)
+{
+    assert(n >= 0 && n <= maxNodos);
+    assert(nodos[n] != ELTO_NULO);
+    return nodos[n];
+}
+
+template <typename T>
+inline typename Abin<T>::nodo Abin<T>::raiz() const
+{
+    return (nodos[0] == ELTO_NULO) ? NODO_NULO : 0;
+}
+
+template <typename T>
+typename Abin<T>::nodo Abin<T>::padre(Abin<T>::nodo n) const
+{
+    assert(n >= 0 && n <= maxNodos - 1);
+    assert(nodos[n] != ELTO_NULO);
+    return (n == 0) ? NODO_NULO : (n - 1) / 2;
+}
+
+template <typename T>
+typename Abin<T>::nodo Abin<T>::hijoIzqdo(Abin<T>::nodo n) const
+{
+    assert(n >= 0 && n <= maxNodos - 1);
+    assert(nodos[n] != ELTO_NULO);
+    return (2 * n + 1 > maxNodos || nodos[2 * n + 1] == ELTO_NULO) ? NODO_NULO : 2 * n + 1;
+}
+
+template <typename T>
+typename Abin<T>::nodo Abin<T>::hijoDrcho(Abin<T>::nodo n) const
+{
+    assert(n >= 0 && n <= maxNodos - 1);
+    assert(nodos[n] != ELTO_NULO);
+    return (2 * n + 2 >= maxNodos || nodos[2 * n + 2] == ELTO_NULO) ? NODO_NULO : 2 * n + 2;
+}
+
+template <typename T>
+Abin<T>::Abin(const Abin<T> &A) : nodos(new T[A.maxNodos]),
+                                  maxNodos(A.maxNodos),
+                                  ELTO_NULO(A.ELTO_NULO)
+{
+    for (nodo n = 0; n <= maxNodos - 1; n++)
+    {
+        nodos[n] = A.nodos[n];
+    }
+}
+
+template <typename T>
+inline Abin<T>::~Abin()
+{
+    delete[] nodos;
+}
+
+template <typename T>
+Abin<T> &Abin<T>::operator=(const Abin<T> &A)
+{
+    if (this != &A)
+    {
+        if (maxNodos != A.maxNodos)
+        {
+            delete[] nodos;
+            maxNodos = A.maxNodos;
+            nodos = new T[maxNodos];
+        }
+        ELTO_NULO = A.ELTO_NULO;
+        for (nodo n = 0; n <= maxNodos - 1; n++)
+        {
+            nodos[n] = A.nodos[n];
+        }
+        return *this;
+    }
+}
+
 #endif
