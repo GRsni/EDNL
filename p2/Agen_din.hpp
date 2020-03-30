@@ -1,16 +1,17 @@
-#ifndef AGEN_LIS_H
-#define AGEN_LIS_H
+#ifndef AGEN_DIN_H
+#define AGEN_DIN_H
 
 #include <cassert>
-#include "lista_en.h"
 
 template <typename T>
 class Agen
 {
+    struct celda;
+
 public:
-    typedef int nodo;
+    typedef celda *nodo;
     static const nodo NODO_NULO;
-    explicit Agen(size_t maxNodos);
+    Agen();
     void insertarRaiz(const T &e);
     void insertarHijoIzqdo(nodo n, const T &e);
     void insertarHermDrcho(nodo n, const T &e);
@@ -24,7 +25,6 @@ public:
     nodo padre(nodo n) const;
     nodo hijoIzqdo(nodo n) const;
     nodo hermDrcho(nodo n) const;
-
     Agen(const Agen<T> &A);
     Agen<T> &operator=(const Agen<T> &A);
     ~Agen();
@@ -33,204 +33,141 @@ private:
     struct celda
     {
         T elto;
-        nodo padre;
-        Lista<nodo> hijos;
+        nodo padre, hizq, heder;
+        celda(const T &e, nodo p = NODO_NULO) : elto(e),
+                                                padre(p),
+                                                hizq(NODO_NULO),
+                                                heder(NODO_NULO) {}
     };
-    celda *nodos;
-    int maxNodos;
-    int numNodos;
+    nodo r;
+    void destruirNodos(nodo &n);
+    nodo copiar(nodo n);
 };
 
 template <typename T>
-const typename Agen<T>::nodo Agen<T>::NODO_NULO(-1);
+const typename Agen<T>::nodo Agen<T>::NODO_NULO(nullptr);
 
 template <typename T>
-inline Agen<T>::Agen(size_t maxNodos) : nodos(new celda[maxNodos]),
-                                        maxNodos(maxNodos), numNodos(0)
+inline Agen<T>::Agen() : r(NODO_NULO) {}
+
+template <typename T>
+inline void Agen<T>::insertarRaiz(const T &e)
 {
-    for (nodo n = 0; n < maxNodos; n++)
-    {
-        nodos[n].padre = NODO_NULO;
-    }
+    assert(r == NODO_NULO);
+    r = new celda(e);
 }
 
 template <typename T>
-void Agen<T>::insertarRaiz(const T &e)
+inline void Agen<T>::insertarHijoIzqdo(Agen<T>::nodo n, const T &e)
 {
-    assert(numNodos == 0);
-    numNodos = 1;
-    nodos[0].elto = e;
+    assert(n != NODO_NULO);
+    nodo hizqdo = n->hizq;
+    n->hizq = new celda(e, n);
+    n->hizq->hizq = hizqdo;
 }
 
 template <typename T>
-void Agen<T>::insertarHijoIzqdo(Agen<T>::nodo n, const T &e)
+inline void Agen<T>::insertarHermDrcho(Agen<T>::nodo n, const T &e)
 {
-    nodo hizq;
-    assert(numNodos > 0);
-    assert(n >= 0 && n < maxNodos);
-    assert(n == 0 || nodos[n].padre != NODO_NULO);
-    assert(numNodos < maxNodos);
+    assert(n != NODO_NULO);
+    assert(n != r);
 
-    for (hizq = 1; nodos[hizq].padre != NODO_NULO; hizq++)
-        ;
-    nodos[hizq].elto = e;
-    nodos[hizq].padre = n;
-
-    Lista<nodo> &Lh = nodos[n].hijos;
-    Lh.insertar(hizq, Lh.primera());
-    ++numNodos;
+    nodo hedercho = n->heder;
+    n->heder = new celda(e, n->padre);
+    n->heder->heder = hedercho;
 }
 
 template <typename T>
-void Agen<T>::insertarHermDrcho(Agen<T>::nodo n, const T &e)
+inline void Agen<T>::eliminarHijoIzqdo(Agen<T>::nodo n)
 {
-    nodo hder;
-    assert(n >= 0 && n < maxNodos);
-    assert(nodos[n].padre != NODO_NULO);
-    assert(numNodos < maxNodos);
+    nodo hizqdo;
 
-    for (hder = 1; nodos[hder].padre != NODO_NULO; hder++)
-        ;
-    nodos[hder].elto = e;
-    nodos[hder].padre = nodos[n].padre;
-    Lista<nodo> &Lhp = nodos[nodos[n].padre].hijos;
-    Lhp.insertar(hder, Lhp.siguiente(Lhp.buscar(n)));
-    ++numNodos;
+    assert(n != NODO_NULO);
+    hizqdo = n->hizq;
+    assert(hizqdo != NODO_NULO);
+    assert(hizqdo->hizq == NODO_NULO);
+
+    n->hizq = hizqdo->heder;
+    delete hizqdo;
 }
 
 template <typename T>
-void Agen<T>::eliminarHijoIzqdo(Agen<T>::nodo n)
+inline void Agen<T>::eliminarHermDrcho(Agen<T>::nodo n)
 {
-    nodo hizq;
-    assert(numNodos > 0);
-    assert(n >= 0 && n < maxNodos);
-    assert(n == 0 || nodos[n].padre != NODO_NULO);
-    Lista<nodo> &Lh = nodos[n].hijos;
-    assert(Lh.primera() != Lh.fin());
+    nodo herdrcho;
 
-    hizq = Lh.elemento(Lh.primera());
-    assert(nodos[hizq].hijos.primera() == nodos[hizq].hijos.fin());
+    assert(n != NODO_NULO);
+    herdrcho = n->heder;
+    assert(herdrcho != NODO_NULO);
+    assert(herdrcho->hizq == NODO_NULO);
 
-    nodos[hizq].padre = NODO_NULO;
-    Lh.eliminar(Lh.primera());
-    --numNodos;
-}
-
-template <typename T>
-void Agen<T>::eliminarHermDrcho(Agen<T>::nodo n)
-{
-    nodo hder;
-    Lista<nodo>::posicion p;
-
-    assert(n >= 0 && n < maxNodos);
-    assert(nodos[n].padre != NODO_NULO);
-    Lista<nodo> &Lhp = nodos[nodos[n].padre].hijos;
-    p = Lhp.siguiente(Lhp.buscar(n));
-    assert(p != Lhp.fin());
-    hder = Lhp.elemento(p);
-    assert(nodos[hder].hijos.primera() == nodos[hder].hijos.fin());
-    nodos[hder].padre = NODO_NULO;
-    Lhp.eliminar(p);
-    --numNodos;
+    n->heder = herdrcho->heder;
+    delete herdrcho;
 }
 
 template <typename T>
 inline void Agen<T>::eliminarRaiz()
 {
-    assert(numNodos == 1);
-    numNodos = 0;
+    assert(r != NODO_NULO);
+    assert(r - hizq == NODO_NULO);
+
+    delete (r);
+    r = NODO_NULO;
 }
 
 template <typename T>
 inline bool Agen<T>::arbolVacio() const
 {
-    return (numNodos == 0);
+    return (r == NODO_NULO);
 }
 
 template <typename T>
 inline const T &Agen<T>::elemento(Agen<T>::nodo n) const
 {
-    assert(numNodos > 0);
-    assert(n >= 0 && n < maxNodos);
-    assert(n == 0 || nodos[n].padre != NODO_NULO);
+    assert(n != NODO_NULO);
 
-    return nodos[n].elto;
+    return n->elto;
 }
 
 template <typename T>
 inline T &Agen<T>::elemento(Agen<T>::nodo n)
 {
-    assert(numNodos > 0);
-    assert(n > 0 && n < maxNodos);
-    assert(n == 0 || nodos[n].padre != NODO_NULO);
-
-    return nodos[n].elto;
+    assert(n != NODO_NULO);
+    return n->elto;
 }
 
 template <typename T>
 inline typename Agen<T>::nodo Agen<T>::raiz() const
 {
-    return (numNodos > 0) ? 0 : NODO_NULO;
+    return r;
 }
 
 template <typename T>
-inline typename Agen<T>::nodo Agen<T>::padre(Agen<T>::nodo n) const
+typename Agen<T>::nodo Agen<T>::padre(Agen<T>::nodo n) const
 {
-    assert(numNodos > 0);
-    assert(n >= 0 && n < maxNodos);
-    assert(n == 0 || nodos[n].padre != NODO_NULO);
+    assert(n != NODO_NULO);
 
-    return nodos[n].padre;
+    return n->padre;
 }
 
 template <typename T>
-inline typename Agen<T>::nodo Agen<T>::hijoIzqdo(Agen<T>::nodo n) const
+typename Agen<T>::nodo Agen<T>::hijoIzqdo(Agen<T>::nodo n) const
 {
-    assert(numNodos > 0);
-    assert(n >= 0 && n < maxNodos);
-    assert(n == 0 || nodos[n].padre != NODO_NULO);
-
-    Lista<nodo> &Lh = nodos[n].hijos;
-    if (Lh.primera() != Lh.fin())
-        return Lh.elemento(Lh.primera());
-    else
-    {
-        return NODO_NULO;
-    }
+    assert(n != NODO_NULO);
+    return n->hizq;
 }
 
 template <typename T>
-inline typename Agen<T>::nodo Agen<T>::hermDrcho(Agen<T>::nodo n) const
+typename Agen<T>::nodo Agen<T>::hermDrcho(Agen<T>::nodo n) const
 {
-    Lista<nodo>::posicion p;
-
-    assert(numNodos > 0);
-    assert(n >= 0 && n < maxNodos);
-    assert(n == 0 || nodos[n].padre != NODO_NULO);
-
-    if (n == 0)
-        return NODO_NULO;
-    else
-    {
-        Lista<nodo> &Lhp = nodos[nodos[n].padre].hijos;
-        p = Lhp.siguiente(Lhp.buscar(n));
-        if (p != Lhp.fin())
-        {
-            return Lhp.elemento(p);
-        }
-        else
-            return NODO_NULO;
-    }
+    assert(n != NODO_NULO);
+    return n->heder;
 }
 
 template <typename T>
-Agen<T>::Agen(const Agen<T> &A) : nodos(new celda[A.maxNodos]),
-                                  maxNodos(A.maxNodos), numNodos(A.numNodos)
+inline Agen<T>::Agen(const Agen<T> &A)
 {
-    for (nodo n = 0; n < maxNodos; n++)
-    {
-        nodos[n] = A.nodos[n];
-    }
+    r = copiar(A.r);
 }
 
 template <typename T>
@@ -238,17 +175,8 @@ Agen<T> &Agen<T>::operator=(const Agen<T> &A)
 {
     if (this != &A)
     {
-        if (maxNodos != A.maxNodos)
-        {
-            delete[] nodos;
-            maxNodos = A.maxNodos;
-            nodos = new celda[maxNodos];
-        }
-        numNodos = A.numNodos;
-        for (nodo n = 0; n < maxNodos; n++)
-        {
-            nodos[n] = A.nodos[n];
-        }
+        this->~Agen();
+        r = copiar(A.r);
     }
     return *this;
 }
@@ -256,6 +184,56 @@ Agen<T> &Agen<T>::operator=(const Agen<T> &A)
 template <typename T>
 inline Agen<T>::~Agen()
 {
-    delete[] nodos;
+    destruirNodos(r);
 }
-#endif //AGEN_LIS_H
+
+/******************* METODOS PRIVADOS ********************************/
+
+template <typename T>
+void Agen<T>::destruirNodos(Agen<T>::nodo &n)
+{
+    if (n != NODO_NULO)
+    {
+        if (n->hizq != NODO_NULO)
+        {
+            nodo herdrcho = n->hizq->heder;
+            while (herdrcho != NODO_NULO)
+            {
+                n->hizq->heder = herdrcho->heder;
+                destruirNodos(herdrcho);
+                herdrcho = n->hizq->heder;
+            }
+            destruirNodos(n->hizq);
+        }
+        delete (n);
+        n = NODO_NULO;
+    }
+}
+
+template <typename T>
+typename Agen<T>::nodo Agen<T>::copiar(Agen<T>::nodo n)
+{
+    nodo m = NODO_NULO;
+
+    if (n != NODO_NULO)
+    {
+        m = new celda(n->elto);
+        if (n->hizq != NODO_NULO)
+        {
+            m->hizq = copiar(n->hizq);
+            m->hizq->padre = m;
+
+            nodo hijo = m->hizq;
+            nodo hedrcho = n->hizq->heder;
+            while (hedrcho != NODO_NULO)
+            {
+                hijo = hijo->heder = copiar(hedrcho);
+                hijo->padre = m;
+                hedrcho = hedrcho->heder;
+            }
+        }
+    }
+    return m;
+}
+
+#endif
