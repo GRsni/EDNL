@@ -3,3 +3,6 @@
 *.exe
 *.h.gch
 *.dat
+*.docx
+*.doc
+/.vscode/

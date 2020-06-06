@@ -8,7 +8,8 @@
 
 #include "Abin_din.hpp"
 
-typedef char tElto;
+//typedef char tElto;
+typedef float tElto;
 
 struct Expresion
 {
@@ -16,6 +17,68 @@ struct Expresion
     char op;
     Expresion(double d = 0, char c = ' ') : val(d), op(c) {}
 };
+
+bool mas_rico_antecesores(Abin<tElto>::nodo n, Abin<tElto> A)
+{
+    bool masRico = true;
+    float riquezaN = A.elemento(n);
+    Abin<tElto>::nodo antecesor = A.padre(n);
+    while (antecesor != Abin<tElto>::NODO_NULO && masRico)
+    {
+        if (A.elemento(antecesor) >= riqueza)
+        {
+            masRico = false;
+        }
+        antecesor = A.padre(antecesor);
+    }
+    return masRico;
+}
+
+bool menos_rico_descendientes(Abin<tElto>::nodo n, tElto riqueza, Abin<tElto> A)
+{
+    if (n == Abin<tElto>::NODO_NULO)
+    {
+        return true;
+    }
+    else
+    {
+        if (A.elemento(n) <= riqueza)
+        {
+            return false;
+        }
+        else
+        {
+            return menos_rico_descendientes(A.hijoIzqdo(n), riqueza, A) && menos_rico_descendientes(A.hijoDrcho(n), riqueza, A);
+        }
+    }
+}
+
+bool es_prospero(Abin<tElto>::nodo n, Abin<tElto> A)
+{
+    return mas_rico_antecesores(n, A) && menos_rico_descendientes(A.hijoIzqdo(n), A.elemento(n), A) && menos_rico_descendientes(A.hijoDrcho(n), A.elemento(n), A);
+}
+
+int contar_numero_prosperos(Abin<tElto>::nodo n, Abin<tElto> A)
+{
+    if (n == Abin<tElto>::NODO_NULO)
+    {
+        return 0;
+    }
+    else
+    {
+        double valor = 0;
+        if (es_prospero(n, A))
+        {
+            valor++;
+        }
+        return valor + contar_numero_prosperos(A.hijoIzqdo(n), A) + contar_numero_prosperos(A.hijoDrcho(n), A);
+    }
+}
+
+int numero_prosperos(Abin<tElto> A)
+{
+    return contar_numero_prosperos(A.raiz(), A);
+}
 
 int numeroNodos_rec(Abin<tElto>::nodo n, Abin<tElto> A)
 {
@@ -25,13 +88,21 @@ int numeroNodos_rec(Abin<tElto>::nodo n, Abin<tElto> A)
     }
     else
     {
-        return (1 + numeroNodos_rec(A.hijoDrcho(n), A) + numeroNodos_rec(A.hijoIzqdo(n), A));
+        return (1 + numeroNodos_rec(A.hijoIzqdo(n), A) + numeroNodos_rec(A.hijoDrcho(n), A));
     }
 }
 
 int numeroNodos(Abin<tElto> A)
 {
     return numeroNodos_rec(A.raiz(), A);
+}
+
+float prosperidad(Abin<tElto> A)
+{
+    int numNodos = numeroNodos(A);
+    int prosperos = numero_prosperos(A);
+    std::cout << prosperos << std::endl;
+    return ((float)prosperos / (float)numNodos) * 100.0;
 }
 
 int alturaAbin_rec(Abin<tElto>::nodo n, Abin<tElto> A)

@@ -48,9 +48,9 @@ template <typename T>
 inline Agen<T>::Agen(size_t maxNodos) : nodos(new celda[maxNodos]),
                                         maxNodos(maxNodos), numNodos(0)
 {
-    for (nodo n = 0; n < maxNodos; n++)
+    for (Agen<T>::nodo n = 0; n < maxNodos; n++)
     {
-        nodos[n].padre = NODO_NULO;
+        nodos[n].padre = Agen<T>::NODO_NULO;
     }
 }
 

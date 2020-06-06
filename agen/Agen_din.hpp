@@ -109,7 +109,7 @@ template <typename T>
 inline void Agen<T>::eliminarRaiz()
 {
     assert(r != NODO_NULO);
-    assert(r - hizq == NODO_NULO);
+    assert(r->hizq == NODO_NULO);
 
     delete (r);
     r = NODO_NULO;
