@@ -34,7 +34,7 @@ Sobrecarga de operadores:
 
 #ifndef ALG_GRAFO_E_S_H
 #define ALG_GRAFO_E_S_H
-#include "grafoPMC.h"  // grafo ponderado
+#include "grafoPMC.h" // grafo ponderado
 #include <vector>
 #include "matriz.h"    // matriz cuadrada
 #include "listaenla.h" // para mostrar listas de vértices
@@ -44,10 +44,11 @@ using std::ostream;
 
 // Inserción de vector<T> en un ostream (para probar Dijkstra)
 template <typename T>
-ostream& operator <<(ostream& os, const vector<T>& v)
+ostream &operator<<(ostream &os, const vector<T> &v)
 {
-   for (size_t i = 0; i < v.size(); i++) {
-      os << std::setw(4);
+   for (size_t i = 0; i < v.size(); i++)
+   {
+      os << std::setw(6);
       if (v[i] != GrafoP<T>::INFINITO)
          os << v[i];
       else
@@ -58,16 +59,18 @@ ostream& operator <<(ostream& os, const vector<T>& v)
 
 // Inserta una matriz<T> en un flujo de salida (para probar Floyd)
 template <typename T>
-ostream& operator << (ostream& os, const matriz<T>& m)
+ostream &operator<<(ostream &os, const matriz<T> &m)
 {
    const size_t n = m.dimension();
    os << "    ";
    for (size_t j = 0; j < n; ++j)
       os << std::setw(4) << j;
    os << std::endl;
-   for (size_t i = 0; i < n; ++i) {
+   for (size_t i = 0; i < n; ++i)
+   {
       os << std::setw(4) << i;
-      for (size_t j = 0; j < n; ++j) {
+      for (size_t j = 0; j < n; ++j)
+      {
          os << std::setw(4);
          if (m[i][j] == GrafoP<T>::INFINITO)
             os << "-";
@@ -81,13 +84,13 @@ ostream& operator << (ostream& os, const matriz<T>& m)
 
 // Inserción de matriz<bool> en un flujo de salida (para probar Warshall)
 template <>
-ostream& operator << <bool>(ostream& os, const matriz<bool>& m);
+ostream &operator<<<bool>(ostream &os, const matriz<bool> &m);
 
 // Inserción de Lista<size_t> en un ostream (para probar recorridos
 // y caminos de Dijkstra y Floyd))
 template <typename T>
-ostream& operator <<(ostream&, const Lista<T>&);
+ostream &operator<<(ostream &, const Lista<T> &);
 template <>
-ostream& operator << <size_t>(ostream& os, const Lista<size_t>& c);
+ostream &operator<<<size_t>(ostream &os, const Lista<size_t> &c);
 
-#endif   // ALG_GRAFO_E_S_H
+#endif // ALG_GRAFO_E_S_H

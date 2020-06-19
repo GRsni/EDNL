@@ -5,4 +5,5 @@
 *.dat
 *.docx
 *.doc
-/.vscode/
+.vscode/
+/parcial*

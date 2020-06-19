@@ -11,18 +11,19 @@
 /*--------------------------------------------------------*/
 
 #include "alg_grafo_E-S.h"
-#include <iomanip>           // std::setw
+#include <iomanip> // std::setw
 
 // Inserción de matriz<bool> en un flujo de salida (para probar Warshall)
 template <>
-ostream& operator << <bool>(ostream& os, const matriz<bool>& m)
+ostream &operator<<<bool>(ostream &os, const matriz<bool> &m)
 {
    const size_t n = m.dimension();
    os << "   ";
    for (size_t j = 0; j < n; ++j)
       os << std::setw(3) << j;
    os << std::endl;
-   for (size_t i = 0; i < n; ++i) {
+   for (size_t i = 0; i < n; ++i)
+   {
       os << std::setw(3) << i;
       for (size_t j = 0; j < n; ++j)
          os << std::setw(3) << m[i][j];
@@ -34,7 +35,7 @@ ostream& operator << <bool>(ostream& os, const matriz<bool>& m)
 // Inserción de Lista<size_t> en un ostream (para probar recorridos
 // y caminos de Dijkstra y Floyd))
 template <>
-ostream& operator << <size_t>(ostream& os, const Lista<size_t>& L)
+ostream &operator<<<size_t>(ostream &os, const Lista<size_t> &L)
 {
    typedef Lista<Grafo::vertice>::posicion posicion;
    for (posicion i = L.primera(); i != L.fin(); i = L.siguiente(i))

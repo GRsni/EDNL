@@ -4,22 +4,22 @@
 /* clase Grafo: Matriz de adyacencia de un grafo.         */
 /*                                                        */
 /* Estructuras de Datos no Lineales                       */
-/* ©2016 José Fidel Argudo                                */
+/* ï¿½2016 Josï¿½ Fidel Argudo                                */
 /*--------------------------------------------------------*/
 /*
-Tipo público:
+Tipo pï¿½blico:
 
    Grafo::vertice // un valor entre 0 y Grafo::numVert()-1
 
-Métodos públicos:
+Mï¿½todos pï¿½blicos:
 
    explicit Grafo(size_t n);
-      Grafo de n vértices sin aristas.
+      Grafo de n vï¿½rtices sin aristas.
 
    explicit Grafo(const std::string& nf);
-      Grafo extraído desde un fichero de texto de nombre nf,
-      que contiene el número de vértices seguido en cada línea
-      de un vértice, el carácter ':' y la lista de sus adyacentes
+      Grafo extraï¿½do desde un fichero de texto de nombre nf,
+      que contiene el nï¿½mero de vï¿½rtices seguido en cada lï¿½nea
+      de un vï¿½rtice, el carï¿½cter ':' y la lista de sus adyacentes
       separados por espacios.
       Ejemplo:
       5
@@ -30,16 +30,16 @@ Métodos públicos:
       4: 2
 
    template <typename T> Grafo(const GrafoP<T>& G);
-      Constructor de conversión. Construye un Grafo a partir
+      Constructor de conversiï¿½n. Construye un Grafo a partir
       de uno ponderado representado mediante matriz de costes,
-      es decir, cambiando la representación a matriz de adyacencia.
+      es decir, cambiando la representaciï¿½n a matriz de adyacencia.
 
    size_t numVert() const;
-      Número de vértices
+      Nï¿½mero de vï¿½rtices
 
    const vector<bool>& operator [](vertice v) const;
    vector<bool>& operator [](vertice v);
-      Vértices adyacentes a v. Fila v de la matriz de adyacencia.
+      Vï¿½rtices adyacentes a v. Fila v de la matriz de adyacencia.
 
    bool esDirigido() const;
       Indica si un grafo es dirigido (true) o no (false).
@@ -47,7 +47,7 @@ Métodos públicos:
 Sobrecarga de operador externo:
 
    std::ostream& operator <<(std::ostream& os, const Grafo& G);
-      Inserción de un Grafo en un flujo de salida.
+      Inserciï¿½n de un Grafo en un flujo de salida.
 
 ----------------------------------------------------------*/
 
@@ -59,28 +59,32 @@ Sobrecarga de operador externo:
 
 using std::vector;
 
-template <typename tCoste> class GrafoP;
+template <typename tCoste>
+class GrafoP;
 
-class Grafo {
+class Grafo
+{
 public:
    typedef size_t vertice;
 
-   explicit Grafo(size_t n): ady(n, vector<bool>(n, false)) {}
-   explicit Grafo(const std::string& nf);
-   template <typename T> Grafo(const GrafoP<T>& G);
-   size_t numVert() const {return ady.size();}
-   const vector<bool>& operator [](vertice v) const {return ady[v];}
-   vector<bool>& operator [](vertice v) {return ady[v];}
+   explicit Grafo(size_t n) : ady(n, vector<bool>(n, false)) {}
+   explicit Grafo(const std::string &nf);
+   template <typename T>
+   Grafo(const GrafoP<T> &G);
+   size_t numVert() const { return ady.size(); }
+   const vector<bool> &operator[](vertice v) const { return ady[v]; }
+   vector<bool> &operator[](vertice v) { return ady[v]; }
    bool esDirigido() const;
+
 private:
-   vector< vector<bool> > ady;
+   vector<vector<bool>> ady;
 };
 
 // Construye un Grafo a partir de uno ponderado representado
-// mediante matriz de costes, es decir, cambiando la representación
+// mediante matriz de costes, es decir, cambiando la representaciï¿½n
 // a matriz de adyacencia.
-template <typename T> Grafo::Grafo(const GrafoP<T>& G):
-   ady(G.numVert(), vector<bool>(G.numVert()))
+template <typename T>
+Grafo::Grafo(const GrafoP<T> &G) : ady(G.numVert(), vector<bool>(G.numVert()))
 {
    const size_t n = G.numVert();
    for (vertice i = 0; i < n; i++)
@@ -88,7 +92,7 @@ template <typename T> Grafo::Grafo(const GrafoP<T>& G):
          ady[i][j] = (G[i][j] != GrafoP<T>::INFINITO);
 }
 
-// Inserción de un Grafo en un flujo de salida.
-std::ostream& operator <<(std::ostream& os, const Grafo& G);
+// Inserciï¿½n de un Grafo en un flujo de salida.
+std::ostream &operator<<(std::ostream &os, const Grafo &G);
 
-#endif   // GRAFO_MADY_H
+#endif // GRAFO_MADY_H

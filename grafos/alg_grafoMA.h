@@ -35,17 +35,16 @@ Funciones:
 #include "matriz.h"    // requerido por Warshall
 #include "listaenla.h" // requerido por recorridos
 
-
-matriz<bool> Warshall(const Grafo& G);
+matriz<bool> Warshall(const Grafo &G);
 
 /*----------------------------------------------------------------------------*/
 /* Recorridos de grafos no ponderados                                         */
 /*----------------------------------------------------------------------------*/
 
-Lista<Grafo::vertice> Profundidad(const Grafo& G, Grafo::vertice v);
+Lista<Grafo::vertice> Profundidad(const Grafo &G, Grafo::vertice v);
 
-Lista<Grafo::vertice> Profundidad2(const Grafo& G, Grafo::vertice v);
+Lista<Grafo::vertice> Profundidad2(const Grafo &G, Grafo::vertice v);
 
-Lista<Grafo::vertice> Anchura(const Grafo& G, Grafo::vertice v);
+Lista<Grafo::vertice> Anchura(const Grafo &G, Grafo::vertice v);
 
-#endif   // ALG_GRAFO_H
+#endif // ALG_GRAFO_H
