@@ -25,7 +25,7 @@ bool mas_rico_antecesores(Abin<tElto>::nodo n, Abin<tElto> A)
     Abin<tElto>::nodo antecesor = A.padre(n);
     while (antecesor != Abin<tElto>::NODO_NULO && masRico)
     {
-        if (A.elemento(antecesor) >= riqueza)
+        if (A.elemento(antecesor) >= riquezaN)
         {
             masRico = false;
         }
