@@ -64,11 +64,11 @@ ostream &operator<<(ostream &os, const matriz<T> &m)
    const size_t n = m.dimension();
    os << "    ";
    for (size_t j = 0; j < n; ++j)
-      os << std::setw(4) << j;
+      os << std::setw(1) << j;
    os << std::endl;
    for (size_t i = 0; i < n; ++i)
    {
-      os << std::setw(4) << i;
+      os << std::setw(1) << i;
       for (size_t j = 0; j < n; ++j)
       {
          os << std::setw(4);

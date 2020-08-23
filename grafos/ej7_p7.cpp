@@ -37,8 +37,8 @@ tCoste calcula_ruta(const GrafoP<tCoste> &Tren, const GrafoP<tCoste> &Bus,
               << Tren;
     std::cout << "Bus\n"
               << Bus;
-    std::cout << costes_tren_desde_origen << std::endl;
-    std::cout << costes_bus_hasta_destino << std::endl;
+    std::cout << "Costes en tren desde origen:"<<costes_tren_desde_origen << std::endl;
+    std::cout << "Costes en bus hasta destino:"<<costes_bus_hasta_destino << std::endl;
 
     tCoste coste_final = costes_tren_desde_origen[cambio1] + costes_bus_hasta_destino[cambio1];
 
@@ -51,9 +51,9 @@ tCoste calcula_ruta(const GrafoP<tCoste> &Tren, const GrafoP<tCoste> &Bus,
     }
 
     ruta_hasta_cambio = camino<tCoste>(origen, cambio_real, caminos_tren);
-    std::cout << ruta_hasta_cambio << std::endl;
+    std::cout << "Ruta hasta cambio: "<<ruta_hasta_cambio << std::endl;
     ruta_desde_cambio = camino<tCoste>(destino, cambio_real, caminos_bus);
-    std::cout << ruta_desde_cambio << std::endl;
+    std::cout << "Ruta desde cambio: "<<ruta_desde_cambio << std::endl;
 
     ruta = ruta_desde_cambio;
 
@@ -64,7 +64,7 @@ int main()
 {
     srand(time(nullptr));
 
-    int tam = 5;
+    int tam = 20;
     GrafoP<tCoste> bus(tam);
     GrafoP<tCoste> tren(tam);
     typename GrafoP<tCoste>::tCamino ruta;
@@ -81,11 +81,17 @@ int main()
             else
             {
                 bus[i][j] = rand() % 100;
+                if(bus[i][j]<10){
+                    bus[i][j]=GrafoP<tCoste>::INFINITO;
+                }
                 tren[i][j] = rand() % 100;
+                if(tren[i][j]<10){
+                    tren[i][j]=GrafoP<tCoste>::INFINITO;
+                }
             }
         }
     }
 
-    std::cout << calcula_ruta(tren, bus, 0, 4, 2, 3, ruta) << std::endl;
-    std::cout << ruta;
+    std::cout << "Coste de ruta: "<<calcula_ruta(tren, bus, 0, 4, 2, 3, ruta) << std::endl;
+    std::cout << "Ruta: "<<ruta;
 }

@@ -9,10 +9,7 @@
 typedef float tCoste;
 typedef typename GrafoP<tCoste>::vertice vertice;
 
-int pedido()
-{
-    return rand() % 1;
-}
+vector<int> pedidos;
 
 vertice encontrar_siguiente(vector<tCoste> costes, vertice actual, vector<bool> servidos)
 {
@@ -35,7 +32,6 @@ vertice encontrar_siguiente(vector<tCoste> costes, vertice actual, vector<bool> 
 
 float calcular_ruta(const GrafoP<tCoste> &G, int capacidad, vertice almacen)
 {
-    vector<int> pedidos(G.numVert(), 1);
     int cajas_actuales = capacidad;
     float dist_total = 0;
     vertice actual, cliente_sig;
@@ -45,7 +41,6 @@ float calcular_ruta(const GrafoP<tCoste> &G, int capacidad, vertice almacen)
     int clientes_por_servir = G.numVert() - 1;
     vector<bool> clientes_servidos(G.numVert(), false);
     clientes_servidos[almacen] = true;
-    pedidos[almacen] = 0;
 
     actual = almacen;
 
@@ -54,6 +49,7 @@ float calcular_ruta(const GrafoP<tCoste> &G, int capacidad, vertice almacen)
         if (cajas_actuales > 0)
         {
             cliente_sig = encontrar_siguiente(costes[actual], actual, clientes_servidos);
+            std::cout<<"Siguiente cliente: "<<cliente_sig<<std::endl; 
             dist_total += costes[actual][cliente_sig];
             int ped = pedidos[cliente_sig];
             // std::cout << "Repartidas " << ped << " cajas a " << cliente_sig << std::endl;
@@ -93,34 +89,39 @@ int main()
     srand(time(nullptr));
     int average = 0;
     int tam = 300;
-    int capacidad = 200;
+    int capacidad = 100;
     GrafoP<tCoste> mapa(tam);
 
-    for (int i = 0; i <= tam - 1; i++)
-    {
-        for (int j = 0; j <= tam - 1; j++)
-        {
-            if (i == j)
-            {
+    for (int i = 0; i < 10; i++){
 
-                mapa[i][j] = 0;
-            }
-            else
+        for (int i = 0; i <= tam - 1; i++)
+        {
+            pedidos.push_back(rand()%100);
+            for (int j = 0; j <= tam - 1; j++)
             {
-                mapa[i][j] = 1;
-                //mapa[i][j] = rand() % 100;
+                if (i == j)
+                {
+
+                    mapa[i][j] = 0;
+                }
+                else
+                {
+                    mapa[i][j] = 1;
+                    //mapa[i][j] = rand() % 100;
+                }
             }
         }
-    }
-    for (int i = 0; i < 100; i++)
-    {
+
+        pedidos[0]=0;
+
         auto start = std::chrono::high_resolution_clock::now();
         //std::cout << mapa;
         std::cout << "Distancia : " << calcular_ruta(mapa, capacidad, 0);
         auto end = std::chrono::high_resolution_clock::now();
         auto tiempo = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         std::cout << "en " << tiempo << " microsegundos." << std::endl;
-        average += tiempo / 100;
+        average += tiempo / 1000000.0;
+        pedidos.clear();
     }
-    std::cout << "Average time: " << average;
+    std::cout << "Average time: " << average<<"segundos";
 }

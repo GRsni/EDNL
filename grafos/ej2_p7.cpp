@@ -1,3 +1,6 @@
+#ifndef LABERINTO
+#define LABERINTO
+
 #include <iostream>
 #include <cmath>
 #include <cstdlib>
@@ -19,6 +22,7 @@ struct Pared
     Casilla casilla2;
 };
 
+/*
 template <>
 ostream &operator<<<size_t>(ostream &os, const Lista<size_t> &L)
 {
@@ -27,7 +31,7 @@ ostream &operator<<<size_t>(ostream &os, const Lista<size_t> &L)
         os << L.elemento(i) << ' ';
     return os;
 }
-
+*/
 bool casillas_adyacentes(Casilla &c1, Casilla &c2)
 {
     int difFila = abs(c1.fila - c2.fila);
@@ -137,8 +141,8 @@ laberinto(int N, vector<Pared> &paredes, Casilla origen, Casilla destino)
 
     vector<tCoste> costesMinimos = Dijkstra(G, nodoOrigen, recorrido);
 
-    std::cout << costesMinimos << std::endl;
-    std::cout << recorrido << std::endl;
+    std::cout << "Costes minimos: "<<costesMinimos << std::endl;
+    std::cout << "Recorrido: "<<recorrido << std::endl;
 
     return camino<tCoste>(nodoOrigen, nodoDestino, recorrido);
 }
@@ -154,9 +158,11 @@ Pared crear_pared(int fil1, int col1, int fil2, int col2)
     return Pared{v1, v2};
 }
 
+#endif
+
 int main()
 {
-    int tam = 3;
+    int tam = 6;
     vector<Pared> paredes;
     Casilla origen{0, 0}, destino{0, tam - 1}, pared1, pared2;
 

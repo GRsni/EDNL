@@ -172,14 +172,14 @@ std::ostream &operator<<(std::ostream &os, const GrafoP<T> &G)
    os << n << " vertices" << std::endl;
    os << "    ";
    for (vertice j = 0; j < n; j++)
-      os << std::setw(4) << j;
+      os << std::setw(3) << j;
    os << std::endl;
    for (vertice i = 0; i < n; i++)
    {
       os << std::setw(4) << i;
       for (vertice j = 0; j < n; j++)
       {
-         os << std::setw(4);
+         os << std::setw(3);
          if (G[i][j] == GrafoP<T>::INFINITO)
             os << "-";
          else
