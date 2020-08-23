@@ -85,4 +85,56 @@ bool pseudocompleto(Abin<tElto> A)
     return pseudocompleto_rec(A, A.raiz());
 }
 
+bool similares_rec(Abin<tElto> A, Abin<tElto>::nodo a, Abin<tElto> B, Abin<tElto>::nodo b)
+{
+    if (a == Abin<tElto>::NODO_NULO && b == Abin<tElto>::NODO_NULO)
+    {
+        return true;
+    }
+    else if (a == Abin<tElto>::NODO_NULO && b != Abin<tElto>::NODO_NULO || a != Abin<tElto>::NODO_NULO && b == Abin<tElto>::NODO_NULO)
+    {
+        return false;
+    }
+    else
+    {
+        return similares_rec(A, A.hijoIzqdo(a), B, B.hijoIzqdo(b)) && similares_rec(A, A.hijoDrcho(a), B, B.hijoDrcho(b));
+    }
+}
+
+bool similares(Abin<tElto> A, Abin<tElto> B)
+{
+    return similares_rec(A, A.raiz(), B, B.raiz());
+}
+
+void reflejado_rec(Abin<tElto> A, Abin<tElto>::nodo n, Abin<tElto> nuevo)
+{
+    if (n != Abin<tElto>::NODO_NULO)
+    {
+        if (n == A.raiz())
+        {
+            nuevo.insertarRaiz(A.elemento(n));
+        }
+        else
+        {
+            if (A.hijoDrcho(n) != Abin<tElto>::NODO_NULO)
+            {
+                nuevo.insertarHijoIzqdo(n, A.elemento(n));
+                reflejado_rec(A, A.hijoDrcho(n), nuevo);
+            }
+            if (A.hijoIzqdo(n) != Abin<tElto>::NODO_NULO)
+            {
+                nuevo.insertarHijoDrcho(n, A.elemento(n));
+                reflejado_rec(A, A.hijoIzqdo(n), nuevo);
+            }
+        }
+    }
+}
+
+Abin<tElto> reflejado(Abin<tElto> A)
+{
+    Abin<tElto> ref;
+    reflejado_rec(A, A.raiz(), ref);
+    return ref;
+}
+
 #endif
