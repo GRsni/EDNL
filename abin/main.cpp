@@ -35,9 +35,9 @@ int main(int argc, char *argv[])
     std::cout << "Numero de nodos en A: " << num_nodos(A) << std::endl;
     // std::cout << "Numero de nodos en A por Prof Iter: " << numNodosProfIter(A) << std::endl;
     //std::cout << "Numero de nodos en A por Anchura Iter: " << numNodosAnchuraIter(A) << std::endl;
-    std::cout << "Altura de A: " << A.altura() << std::endl;
-    Abin<tElto>::nodo n = A.hijoIzqdo(A.hijoIzqdo(A.hijoIzqdo(A.raiz())));
-    std::cout << "Profundidad del nodo " << A.elemento(n) << " en A: " << A.profundidad(n) << std::endl;
+ //   std::cout << "Altura de A: " << A.altura() << std::endl;
+   // Abin<tElto>::nodo n = A.hijoIzqdo(A.hijoIzqdo(A.hijoIzqdo(A.raiz())));
+    //std::cout << "Profundidad del nodo " << A.elemento(n) << " en A: " << A.profundidad(n) << std::endl;
     //std::cout << "El desequilibrio del arbol es: " << deseqArbol(A) << std::endl;
     std::cout << "El arbol es pseudocompleto: " << (pseudocompleto(A) ? "true" : "false") << std::endl;
 

@@ -7,6 +7,7 @@
 #include <queue>
 
 #include "Abin_din.hpp"
+#include "Abin_E-S.hpp"
 
 typedef float tElto;
 
@@ -106,10 +107,12 @@ bool similares(Abin<tElto> A, Abin<tElto> B)
     return similares_rec(A, A.raiz(), B, B.raiz());
 }
 
-void reflejado_rec(Abin<tElto> A, Abin<tElto>::nodo n, Abin<tElto> nuevo)
+void reflejado_rec(Abin<tElto>& A, Abin<tElto>::nodo n, Abin<tElto>& nuevo)
 {
     if (n != Abin<tElto>::NODO_NULO)
     {
+        std::cout<<"Leyendo nodo: "<<A.elemento(n)<<std::endl;
+        imprimirAbin(nuevo);
         if (n == A.raiz())
         {
             nuevo.insertarRaiz(A.elemento(n));
